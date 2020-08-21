@@ -14,26 +14,23 @@ namespace Faraday.Examples
 
             var serviceCollection = new ServiceCollection();
 
-            //serviceCollection.AddSingleton<IDynamoStore<Car>>(provider => new DynamoStore<Car>(dynamoDbClient,"faraday", it => it.Id));
-
-            serviceCollection.AddSingleton<IDynamoStore<Car>>(provider =>
-                new DynamoStore<Car>(dynamoDbClient,"faradaywithsort", it => it.Id, sortKeyDescriptor: it => it.Brand));
+            serviceCollection.AddSingleton<IDynamoStore<Book>>(provider => new DynamoStore<Book>(dynamoDbClient));
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
-            var dynamoStore = serviceProvider.GetRequiredService<IDynamoStore<Car>>();
+            var dynamoStore = serviceProvider.GetRequiredService<IDynamoStore<Book>>();
 
-            var car = new Car
+            var book = new Book
             {
                 Id = Guid.NewGuid().ToString(),
-                Brand = "Tesla",
-                ModelName = "Model 3",
-                HorsePower = 360
+                Author = "J. R. R. Tolkien",
+                Title = "The Hobbit",
+                YearReleased = 1937
             };
 
-            await dynamoStore.UpsertAsync(car);
+            await dynamoStore.UpsertAsync(book);
 
-            var returned = await dynamoStore.GetAsync(car.Id, car.Brand);
+            var returned = await dynamoStore.GetAsync(book.Id);
 
             await dynamoStore.DeleteAsync(returned);
 

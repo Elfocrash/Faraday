@@ -39,6 +39,18 @@ namespace Faraday
             _dynamoDbContext = new DynamoDBContext(_amazonDynamoDb);
         }
 
+        public DynamoStore(IAmazonDynamoDB amazonDynamoDb)
+        {
+            _amazonDynamoDb = amazonDynamoDb;
+            var entityType = typeof(TEntity);
+            _tableName = EntityTypeInfoResolver.ResolveTableName(entityType);
+            _partitionKeyDescriptor = EntityTypeInfoResolver.ResolvePartitionKeyDescriptor<TEntity>(entityType);
+            _partitionKeyAttributeName = EntityTypeInfoResolver.ResolvePartitionKeyAttributeName(entityType);
+            _sortKeyDescriptor = EntityTypeInfoResolver.ResolveSortKeyDescriptor<TEntity>(entityType);
+            _sortKeyAttributeName = EntityTypeInfoResolver.ResolveSortKeyAttributeName(entityType);
+            _dynamoDbContext = new DynamoDBContext(_amazonDynamoDb);
+        }
+
         public async Task UpsertAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             var document = _dynamoDbContext.ToDocument(entity);
