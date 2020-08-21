@@ -2,10 +2,10 @@ using Faraday.Attributes;
 
 namespace Faraday.Examples
 {
-    [FaradayTableName("books")]
+    [FaradaySharedTable("books")]
     public class Book
     {
-        [FaradayPartitionKey()]
+        [FaradayPartitionKey]
         public string Id { get; set; }
 
         public string Title { get; set; }

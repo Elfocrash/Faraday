@@ -11,14 +11,16 @@ namespace Faraday
 
         public static string ResolveTableName(Type entityType)
         {
-            var tableNameAttribute = entityType.GetCustomAttribute<FaradayTableNameAttribute>();
+            var tableNameAttribute = entityType.GetCustomAttribute<FaradayTableAttribute>();
+            var sharedTableNameAttribute = entityType.GetCustomAttribute<FaradaySharedTableAttribute>();
 
-            if (tableNameAttribute == null)
+            if (tableNameAttribute != null && sharedTableNameAttribute != null)
             {
-                throw new Exception($"The entity of type {entityType.Name} is missing the FaradayTableNameAttribute");
+                throw new Exception("You can only have either one FaradayTableAttribute or one FaradaySharedTableAttribute per entity");
             }
 
-            var tableName = tableNameAttribute.TableName;
+            var tableName = tableNameAttribute?.TableName ?? sharedTableNameAttribute?.TableName ??
+                throw new Exception($"The entity of type {entityType.Name} is missing the FaradayTableNameAttribute or FaradaySharedTableAttribute");
 
             if (string.IsNullOrEmpty(tableName))
             {
@@ -133,6 +135,31 @@ namespace Faraday
             }
 
             return sortKeyAttributeName;
+        }
+
+        public static bool ResolveIsSharedTable(Type entityType)
+        {
+            var sharedTableAttribute = entityType.GetCustomAttribute<FaradaySharedTableAttribute>();
+            return sharedTableAttribute != null;
+        }
+
+        public static string ResolveSharedTableTypeNameOverride(Type entityType)
+        {
+            var sharedTableAttribute = entityType.GetCustomAttribute<FaradaySharedTableAttribute>();
+
+            if (sharedTableAttribute == null)
+            {
+                return null;
+            }
+
+            var sharedTableTypeNameOverride = sharedTableAttribute.SharedTypeNameOverride;
+
+            if (sharedTableTypeNameOverride != null && sharedTableTypeNameOverride.Length == 0)
+            {
+                throw new Exception("SharedTypeNameOverride cannot be empty");
+            }
+
+            return sharedTableTypeNameOverride;
         }
     }
 }

@@ -3,11 +3,11 @@ using System;
 namespace Faraday.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class FaradayTableNameAttribute : Attribute
+    public class FaradayTableAttribute : Attribute
     {
         public string TableName { get; }
 
-        public FaradayTableNameAttribute(string tableName)
+        public FaradayTableAttribute(string tableName)
         {
             TableName = tableName;
         }

@@ -15,6 +15,8 @@ namespace Faraday
     {
         private readonly IAmazonDynamoDB _amazonDynamoDb;
         private readonly string _tableName;
+        private readonly bool _isSharedTable;
+        private readonly string _sharedTableTypeName;
         private readonly IDynamoDBContext _dynamoDbContext;
         private readonly Func<TEntity, string> _partitionKeyDescriptor;
         private readonly Func<TEntity, string> _sortKeyDescriptor;
@@ -27,11 +29,15 @@ namespace Faraday
             Func<TEntity, string> partitionKeyDescriptor,
             string partitionKeyAttributeName = FaradayConstants.PartitionKeyName,
             Func<TEntity, string> sortKeyDescriptor = null,
-            string sortKeyAttributeName = FaradayConstants.SortKeyName
+            string sortKeyAttributeName = FaradayConstants.SortKeyName,
+            bool isSharedTable = false,
+            string sharedTableTypeNameOverride = null
             )
         {
             _amazonDynamoDb = amazonDynamoDb;
             _tableName = tableName;
+            _isSharedTable = isSharedTable;
+            _sharedTableTypeName = sharedTableTypeNameOverride ?? typeof(TEntity).Name;
             _partitionKeyDescriptor = partitionKeyDescriptor;
             _partitionKeyAttributeName = partitionKeyAttributeName;
             _sortKeyDescriptor = sortKeyDescriptor;
@@ -48,6 +54,8 @@ namespace Faraday
             _partitionKeyAttributeName = EntityTypeInfoResolver.ResolvePartitionKeyAttributeName(entityType);
             _sortKeyDescriptor = EntityTypeInfoResolver.ResolveSortKeyDescriptor<TEntity>(entityType);
             _sortKeyAttributeName = EntityTypeInfoResolver.ResolveSortKeyAttributeName(entityType);
+            _isSharedTable = EntityTypeInfoResolver.ResolveIsSharedTable(entityType);
+            _sharedTableTypeName = EntityTypeInfoResolver.ResolveSharedTableTypeNameOverride(entityType) ?? entityType.Name;
             _dynamoDbContext = new DynamoDBContext(_amazonDynamoDb);
         }
 
@@ -61,6 +69,8 @@ namespace Faraday
             {
                 attributeMap[_sortKeyAttributeName] = new AttributeValue(_sortKeyDescriptor(entity));
             }
+
+            attributeMap[FaradayConstants.TypeKeyName] = new AttributeValue(_sharedTableTypeName);
 
             var putItemResponse = await _amazonDynamoDb.PutItemAsync(_tableName, attributeMap, cancellationToken);
         }
