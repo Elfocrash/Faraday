@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CA9FC6AF-87DE-4D21-91E0-81482246EA88}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5E92FB7E-ED26-4677-B9B4-038F93BAC626}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Faraday", "src\Faraday\Faraday.csproj", "{4C528057-ABFA-4296-B84B-AD4935477B2D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{3E2FC355-ABBB-456E-951A-811D4F969F1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Faraday.Examples", "samples\Faraday.Examples\Faraday.Examples.csproj", "{C69FD36A-65AD-411D-B946-854DDB7C3EF7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4C528057-ABFA-4296-B84B-AD4935477B2D} = {CA9FC6AF-87DE-4D21-91E0-81482246EA88}
+		{C69FD36A-65AD-411D-B946-854DDB7C3EF7} = {3E2FC355-ABBB-456E-951A-811D4F969F1A}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C528057-ABFA-4296-B84B-AD4935477B2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C528057-ABFA-4296-B84B-AD4935477B2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C528057-ABFA-4296-B84B-AD4935477B2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C528057-ABFA-4296-B84B-AD4935477B2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C69FD36A-65AD-411D-B946-854DDB7C3EF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C69FD36A-65AD-411D-B946-854DDB7C3EF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C69FD36A-65AD-411D-B946-854DDB7C3EF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C69FD36A-65AD-411D-B946-854DDB7C3EF7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
